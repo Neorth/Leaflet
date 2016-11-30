@@ -325,26 +325,29 @@ L.Control.Layers = L.Control.extend({
 			input = this._createRadioElement('leaflet-base-layers', checked);
 		}
 
-		input.layerId = L.stamp(obj.layer);
+		var id = L.stamp(obj.layer);
+		input.layerId = id;
+		input.id = 'leaflet-control-layers-input-' + id;
+		label.htmlFor = 'leaflet-control-layers-input-' + id;
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
-		var name = document.createElement('span');
-		name.innerHTML = ' ' + obj.name;
+		// var name = document.createElement('span');
+		label.innerHTML = ' ' + obj.name;
 
 		// Helps from preventing layer control flicker when checkboxes are disabled
 		// https://github.com/Leaflet/Leaflet/issues/2771
 		var holder = document.createElement('div');
 
-		label.appendChild(holder);
+		// label.appendChild(holder);
 		holder.appendChild(input);
-		holder.appendChild(name);
+		holder.appendChild(label);
 
 		var container = obj.overlay ? this._overlaysList : this._baseLayersList;
-		container.appendChild(label);
+		container.appendChild(holder);
 
 		this._checkDisabledLayers();
-		return label;
+		return holder;
 	},
 
 	_onInputClick: function () {
